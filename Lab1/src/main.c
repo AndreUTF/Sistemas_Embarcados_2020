@@ -7,7 +7,7 @@
 #include "driverlib/systick.h"
 
 uint8_t LED_D1 = 0;
-uint8_t FREQUENCIA = 1;
+uint8_t FREQUENCIA = 100;
 
 void SysTick_Handler(void){
   //LED_D1 ^= GPIO_PIN_1; // Troca estado do LED D1
@@ -16,6 +16,7 @@ void SysTick_Handler(void){
 
 void main(void){
   int contador=0;
+  float dc = 5;
   int cont = 24000000/FREQUENCIA;
   SysTickPeriodSet(12000000); // f = 1Hz para clock = 24MHz
   
@@ -44,10 +45,11 @@ void main(void){
 
   SysTickIntEnable();
   SysTickEnable();
-
+  float ct=(float)((float)cont*dc)/100.0;
   while(1){
     contador++;
-    if(contador=(cont)/10){
+    
+    if(contador==(int)ct){
       GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, LED_D1);
       LED_D1 ^=GPIO_PIN_1;
       contador=0;
